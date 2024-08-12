@@ -7,6 +7,7 @@ import exception.ClienteNaoExisteException;
 import exception.ProdutoNaoExisteException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,13 +64,23 @@ public class SistemaComercialMap {
         throw new ClienteNaoExisteException("Cliente não encontrado");
     }
 
-    public ArrayList<Produto> pesquisaProdutosDaCategoria(Categoria categoria){
-        ArrayList<Produto> produtosList = new ArrayList<>();
+    public Collection<Produto> pesquisaProdutosDaCategoria(Categoria categoria){
+        Collection<Produto> produtosList = new ArrayList<>();
         for(Produto produto: produtos.values()){
             if(produto.getCategoriaProduto().equals(categoria)){
                 produtosList.add(produto);
             }
         }
         return produtosList;
+    }
+    public Collection<Cliente> pesquisaClienteComONomeComecandoCom(String prefixo){
+        Collection<Cliente> clientesList = new ArrayList<>();
+        for(Cliente cliente: clientes.values()){
+            if(cliente.getNome().startsWith(prefixo)){
+                clientesList.add(cliente);3
+
+            }
+        }
+        return clientesList;
     }
 }
