@@ -77,7 +77,7 @@ public class SistemaComercialMap {
         Collection<Cliente> clientesList = new ArrayList<>();
         for(Cliente cliente: clientes.values()){
             if(cliente.getNome().startsWith(prefixo)){
-                clientesList.add(cliente);3
+                clientesList.add(cliente);
 
             }
         }
