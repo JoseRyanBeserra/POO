@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class Amigo {
 
     private String nome;
@@ -33,5 +35,23 @@ public class Amigo {
     }
     public String getEmailAmigoSorteado(){
         return this.emailAmigoSorteado;
+    }
+
+    @Override
+    public String toString() {
+        return "Amigo: " + "email = " + email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Amigo amigo = (Amigo) o;
+        return Objects.equals(nome, amigo.nome) && Objects.equals(email, amigo.email) && Objects.equals(emailAmigoSorteado, amigo.emailAmigoSorteado);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, email, emailAmigoSorteado);
     }
 }
