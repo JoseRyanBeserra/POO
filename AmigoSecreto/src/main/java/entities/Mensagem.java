@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public abstract class Mensagem {
 
     protected String texto;
@@ -34,4 +36,16 @@ public abstract class Mensagem {
         return this.anonimo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mensagem mensagem = (Mensagem) o;
+        return anonimo == mensagem.anonimo && Objects.equals(texto, mensagem.texto) && Objects.equals(emailRemetente, mensagem.emailRemetente);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(texto, emailRemetente, anonimo);
+    }
 }

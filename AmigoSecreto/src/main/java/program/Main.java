@@ -46,6 +46,6 @@ public class Main {
         }
 
         sistema.enviarMensagemParaTodos("Oi gente", "maria@email.com",false);
-        
+
     }
 }

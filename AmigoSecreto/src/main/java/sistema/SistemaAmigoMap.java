@@ -8,46 +8,46 @@ import exceptions.JaTemAmigoSecretoException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class SistemaAmigo {
+public class SistemaAmigoMap {
+    // amigoMap recebe o email como key
+    private Map<String, Amigo> amigoMap;
 
-    private ArrayList<Amigo> amigoArrayList;
-    private ArrayList<Mensagem> mensagemArrayList;
+    //mensagemMap recebe o hashCode da Mensagem como key
+    private Map<Integer, Mensagem> mensagemMap;
 
-    public SistemaAmigo(ArrayList<Amigo> listaAmigo, ArrayList<Mensagem> listaMensagem){
-        this.amigoArrayList = listaAmigo;
-        this.mensagemArrayList = listaMensagem;
+    public SistemaAmigoMap(Map<String, Amigo> mapAmigo, Map<Integer, Mensagem> mapMensagem){
+        this.amigoMap = mapAmigo;
+        this.mensagemMap = mapMensagem;
     }
 
     public void cadastraAmigo(String nome, String email){
-        Amigo novoAmigo = new Amigo(nome, email);
-        amigoArrayList.add(novoAmigo);
+        Amigo amigo = new Amigo(nome, email);
+        amigoMap.put(email, amigo);
     }
-
-    public Amigo pesquisaAmigo(String emailAmigo){
-        for(Amigo amigo: amigoArrayList){
-            if(amigo.getEmail().equals(emailAmigo)){
-                return amigo;
-            }
+    public Amigo pesquisaAmigo(String email){
+        if(amigoMap.containsKey(email)){
+            return amigoMap.get(email);
         }
         return null;
     }
 
     public void enviarMensagemParaTodos(String texto, String emailRemetente, boolean ehAnonima){
         Mensagem mensagemParaTodos = new MensagemParaTodos(texto, emailRemetente, ehAnonima);
-        mensagemArrayList.add(mensagemParaTodos);
+        mensagemMap.put(mensagemParaTodos.hashCode(),mensagemParaTodos);
         mensagemParaTodos.getTextoCompletoAExibir();
     }
 
     public void enviarMensagemParaAlguem(String texto, String emailRemetente, String emailDestinatario, boolean ehAnonima){
         Mensagem mensagemParaAlguem = new MensagemParaAlguem(texto,emailRemetente,emailDestinatario,ehAnonima);
-        mensagemArrayList.add(mensagemParaAlguem);
+        mensagemMap.put(mensagemParaAlguem.hashCode(), mensagemParaAlguem);
         mensagemParaAlguem.getTextoCompletoAExibir();
     }
 
     public List<Mensagem> pesquisaMensagensAnonimas(){
         List<Mensagem> mensagensAnonimas = new ArrayList<>();
-        for(Mensagem mensagem:mensagemArrayList){
+        for(Mensagem mensagem:mensagemMap.values()){
             if(mensagem.ehAnonima()){
                 mensagensAnonimas.add(mensagem);
             }
@@ -56,7 +56,11 @@ public class SistemaAmigo {
     }
 
     public List<Mensagem> pesquisaTodasAsMensagens(){
-        return mensagemArrayList;
+        ArrayList<Mensagem> listaMensagem = new ArrayList<>();
+        for(Mensagem mensagem:mensagemMap.values()){
+            listaMensagem.add(mensagem);
+        }
+        return listaMensagem;
     }
 
     public void configuraAmigoSecretoDe(String emailDaPessoa, String emailAmigoSorteado) throws JaTemAmigoSecretoException {
@@ -66,8 +70,9 @@ public class SistemaAmigo {
         }
         throw new JaTemAmigoSecretoException("Pessoa ja tem amigo secreto");
     }
+
     public String pesquisaAmigoSecretoDe(String emailDaPessoa){
-        for(Amigo amigo:amigoArrayList){
+        for(Amigo amigo: amigoMap.values()){
             if(amigo.getEmail().equals(emailDaPessoa)){
                 return amigo.getEmailAmigoSorteado();
             }
